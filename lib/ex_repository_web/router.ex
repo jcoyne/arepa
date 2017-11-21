@@ -20,7 +20,9 @@ defmodule ExRepositoryWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", ExRepositoryWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", ExRepositoryWeb do
+    pipe_through :api
+
+    get "/catalog", CatalogController, :index
+  end
 end
