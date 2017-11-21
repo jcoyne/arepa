@@ -7,6 +7,10 @@ defmodule ExRepositoryWeb.CatalogView do
     }
   end
 
+  def render("show.json", resource) do
+    resource_json(resource)
+  end
+
   def resource_json(resource) do
     %{
       internal_resource: resource.internal_resource,

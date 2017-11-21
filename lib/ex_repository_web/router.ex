@@ -24,5 +24,7 @@ defmodule ExRepositoryWeb.Router do
     pipe_through :api
 
     get "/catalog", CatalogController, :index
+    post "/catalog", CatalogController, :create
+
   end
 end
