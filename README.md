@@ -1,4 +1,4 @@
-# T.A.C.O
+# T.A.C.O. 🌮
 
 To start your Phoenix server:
 
