@@ -8,7 +8,7 @@
     <h4>Resources</h4>
     <ul>
       <li>
-        <a href="/api/catalog">Object Catalog</a>
+        <a href="<%= catalog_path @conn, :index %>">Object Catalog</a>
       </li>
     </ul>
   </div>
