@@ -2,7 +2,9 @@ defmodule ExRepositoryWeb.AuthController do
   use ExRepositoryWeb, :controller
   plug Ueberauth
   import Ecto.Query
+  require Logger
   alias ExRepository.Users.User
+  alias ExRepository.Repo
   alias ExRepositoryWeb.Guardian
   alias MyApp.UserQuery
 
@@ -18,8 +20,10 @@ defmodule ExRepositoryWeb.AuthController do
     |> Guardian.Plug.sign_out(conn)
   end
 
-  def callback(%{assigns: %{ueberauth_failure: _fails}} = conn, _params) do
+  def callback(%{assigns: %{ueberauth_failure: failure}} = conn, _params) do
     # This callback is called when the user denies the app to get the data from the oauth provider
+    # Logger.info "denied: #{Enum.map(failure.errors, & &1.message) |> Enum.join(", ")}"
+
     conn
     |> put_status(401)
     |> render(ExRepositoryWeb.ErrorView, "401.json-api")
@@ -31,11 +35,12 @@ defmodule ExRepositoryWeb.AuthController do
         sign_in_user(conn, %{"user" => user})
     end
 
-  case AuthUser.basic_info(auth) do
+    case AuthUser.basic_info(auth) do
       {:ok, user} ->
         conn
         |> render(ExRepositoryWeb.UserView, "show.json-api", %{data: user})
       {:error} ->
+        Logger.info "basic info"
         conn
         |> put_status(401)
         |> render(ExRepositoryWeb.ErrorView, "401.json-api")
@@ -65,6 +70,7 @@ defmodule ExRepositoryWeb.AuthController do
           |> json(%{access_token: jwt}) # Return token to the client
 
         false ->
+          Logger.info "Unsuccessful sign in"
           # Unsuccessful login
           conn
           |> put_status(401)
@@ -81,15 +87,13 @@ defmodule ExRepositoryWeb.AuthController do
 
   def sign_up_user(conn, %{"user" => user}) do
     changeset = User.changeset %User{}, %{email: user.email,
-      avatar: user.avatar,
-      first_name: user.first_name,
-      last_name: user.last_name,
+      name: user.name,
       auth_provider: "google"}
 
     case Repo.insert changeset do
       {:ok, user} ->
         # Encode a JWT
-        { :ok, jwt, _ } = Guardian.encode_and_sign(user, :token)
+        { :ok, jwt, _ } = Guardian.encode_and_sign(user)
 
         conn
         |> put_resp_header("authorization", "Bearer #{jwt}")
@@ -102,6 +106,8 @@ defmodule ExRepositoryWeb.AuthController do
   end
 
   def unauthenticated(conn, params) do
+    Logger.info "unauthenticated"
+
     conn
     |> put_status(401)
     |> render(ExRepositoryWeb.ErrorView, "401.json-api")

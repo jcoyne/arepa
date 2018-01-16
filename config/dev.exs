@@ -56,3 +56,5 @@ config :ex_repository, ExRepository.Repo,
   database: "ex_repository_dev",
   hostname: "localhost",
   pool_size: 10
+
+import_config "#{Mix.env}.secret.exs"

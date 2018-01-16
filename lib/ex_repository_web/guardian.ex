@@ -1,5 +1,5 @@
 defmodule ExRepositoryWeb.Guardian do
-  use Guardian, otp_app: :my_app
+  use Guardian, otp_app: :ex_repository
 
   def subject_for_token(resource, _claims) do
     {:ok, to_string(resource.id)}

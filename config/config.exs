@@ -41,10 +41,9 @@ config :ueberauth, Ueberauth.Strategy.Google.OAuth,
   redirect_uri: System.get_env("GOOGLE_REDIRECT_URI")
 
 # Guardian configuration
-config :guardian, ExRepositoryWeb.Guardian,
+config :ex_repository, ExRepositoryWeb.Guardian,
   allowed_algos: ["HS512"], # optional
-  verify_module: Guardian.JWT,  # optional
-  issuer: "TACO",
+  issuer: "ex_repository",
   ttl: { 30, :days },
   allowed_drift: 2000,
   verify_issuer: true, # optional
