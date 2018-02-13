@@ -1,4 +1,4 @@
-# A.R.E.P.A. 🌮
+# A.R.E.P.A.
 (Advance Repository Exercise on Phoenix Architecture) or something like that.
 
 <img src="https://pbs.twimg.com/profile_images/806729351303569408/kleyYIiY.jpg">
