@@ -1,4 +1,5 @@
-# T.A.C.O. 🌮
+# A.R.E.P.A. 🌮
+(Advance Repository Exercise on Phoenix Architecture) or something like that.
 
 To start your Phoenix server:
 
